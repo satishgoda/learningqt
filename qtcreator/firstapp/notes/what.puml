@@ -17,7 +17,7 @@ Ui::MainWindow(QMainWindow)
 end note
 
 note as ncppUiFile
-moc_mainwindow.h
+ui_mainwindow.h
 
 Ui::MainWindow ISA QMainWindow
 end note
