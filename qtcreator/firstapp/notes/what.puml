@@ -13,7 +13,7 @@
 note as nUiFile
 mainwindow.ui
 
-Ui::MainWindow(QMainWindow)
+Ui::MainWindow
 end note
 
 note as ncppUiFile
