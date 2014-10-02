@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+
+# PyCharm
+.idea/
+
+# QtCreator
+*.pro.user
+
+# debug and release
+build/
+release/
