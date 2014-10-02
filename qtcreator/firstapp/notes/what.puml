@@ -1,0 +1,44 @@
+@startuml
+''left to right direction
+
+:Programmer: as P
+
+[QtDesigner] as QtD
+[qmake] as QMake
+
+(UI File) as UiFile
+(C++ Ui Class) as cppUiFile
+(User Defined Class) as UDC
+
+note as nUiFile
+mainwindow.ui
+
+Ui::MainWindow(QMainWindow)
+end note
+
+note as ncppUiFile
+moc_mainwindow.h
+
+Ui::MainWindow ISA QMainWindow
+end note
+
+note as nUDC
+mainwindow.h, mainwindow.cpp
+
+MainWindow ISA QMainWindow
+end note
+
+P --> QtD : Uses
+QtD --> UiFile : Generates
+QMake <.r. UiFile : Uses
+QMake -l-> cppUiFile : Generates
+
+UiFile .r. nUiFile
+cppUiFile .l. ncppUiFile
+
+P --> UDC : Manually creates
+UDC .l. nUDC
+
+UDC <..> cppUiFile : Populates itself with ui widgets from
+
+@enduml
