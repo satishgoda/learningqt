@@ -1,0 +1,4 @@
+learningqt
+==========
+
+Learning Qt Programming
