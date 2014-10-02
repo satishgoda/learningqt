@@ -34,5 +34,5 @@
 *.pro.user
 
 # debug and release
-build/
-release/
+build/*.o
+release/*.o
