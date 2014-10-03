@@ -3,8 +3,10 @@ from PySide import QtGui, QtCore
 
 
 class MyMainWindow(QtGui.QMainWindow):
-    def __init__(self):
+    def __init__(self, title, width=300, height=300):
         super(MyMainWindow, self).__init__()
+        self.setWindowTitle(title)
+        self.setFixedSize(width, height)
         self._initUI()
 
     def _initUI(self):
@@ -23,9 +25,7 @@ if __name__ == "__main__":
 
     app = QtGui.QApplication(sys.argv)
 
-    window = MyMainWindow()
-    window.setWindowTitle("Hello PySide")
-    window.setFixedSize(500, 500)
+    window = MyMainWindow(title="Hello PySide", width=500, height=500)
 
     window.show()
 
