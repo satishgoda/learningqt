@@ -12,8 +12,14 @@ class MyMainWindow(QtGui.QMainWindow):
     def _initUI(self):
         self._widget = QtGui.QWidget()
         self.setCentralWidget(self._widget)
-        self._button = QtGui.QPushButton("Close Window", parent=self._widget)
+        self._layout = QtGui.QHBoxLayout()
+        self._widget.setLayout(self._layout)
+        self._button = QtGui.QPushButton("Close Window")
+        self._tool1 = QtGui.QToolButton()
+        self._layout.addWidget(self._button)
+        self._layout.addWidget(self._tool1)
         self._button.clicked.connect(self.close)
+        self._tool1.clicked.connect(self.close)
 
     def close(self):
         print("Closing")
