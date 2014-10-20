@@ -6,12 +6,34 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>411</height>
+    <width>400</width>
+    <height>400</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>400</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>400</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="toolTip">
+   <string>I cannot be resized at all. Sorry!</string>
+  </property>
+  <property name="whatsThis">
+   <string>I am a widget that cannot be resized</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(153, 153, 153);
+</string>
   </property>
  </widget>
  <resources/>
