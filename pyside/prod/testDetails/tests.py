@@ -1,23 +1,33 @@
 from PySide import QtCore, QtGui
 
 import testsDialog
+from testDetails import TestDetailsDialog
 
 
 class BaseTest(object):
     def __init__(self):
         pass
 
+    @property
+    def name(self):
+        return self.nice_name
+
 
 class InsanityTest(BaseTest):
     description = "Insane subjects were found as following"
+    __nice_name = "Insanity Test"
 
     def __init__(self):
         super(BaseTest, self).__init__()
 
+    @property
+    def nice_name(self):
+        return self.__nice_name
+
     def drawUi(self, parent):
         layout = parent.layout()
         parent.detailsDescriptionLabel.setText(self.description)
-        for index in range(0, 25):
+        for index in range(0, 2):
             hl = QtGui.QHBoxLayout()
             layout.addLayout(hl)
             lbl = QtGui.QLabel(parent)
@@ -33,9 +43,14 @@ class InsanityTest(BaseTest):
 
 class LactoseIntolerantTest(BaseTest):
     description = "Lactose Intolerance was found for the following subjects"
+    __nice_name = "Lactose Intolerant Test"
 
     def __init__(self):
         super(BaseTest, self).__init__()
+
+    @property
+    def nice_name(self):
+        return self.__nice_name
 
     def drawUi(self, parent):
         layout = parent.layout()
@@ -60,16 +75,22 @@ class TestsDialog(QtGui.QDialog, testsDialog.Ui_Dialog):
     def initUi(self):
         self.setupUi(self)
         layout = self.testsPlaceholder.layout()
+
+        def callback(test):
+            return lambda: TestDetailsDialog(test).exec_()
+
         if not self._tests:
             label = QtGui.QLabel(self)
             label.setText("No tests have been taken")
             layout.addWidget(label)
         else:
             for test in self._tests:
-                name = test.__class__.__name__
+                hl = QtGui.QHBoxLayout()
+                layout.addLayout(hl)
                 pb = QtGui.QPushButton(self)
-                pb.setText(name)
-                layout.addWidget(pb)
+                pb.setText(test.name)
+                pb.clicked.connect(callback(test))
+                hl.addWidget(pb)
 
 
 if __name__ == '__main__':

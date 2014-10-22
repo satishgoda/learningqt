@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'testDetailsDialog.ui'
 #
-# Created: Wed Oct 22 22:13:36 2014
+# Created: Wed Oct 22 23:58:35 2014
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,6 +55,7 @@ class Ui_Dialog(object):
         self.detailsPlaceholder.setGeometry(QtCore.QRect(0, 0, 625, 336))
         self.detailsPlaceholder.setObjectName("detailsPlaceholder")
         self.verticalLayout = QtGui.QVBoxLayout(self.detailsPlaceholder)
+        self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetFixedSize)
         self.verticalLayout.setObjectName("verticalLayout")
         self.detailsScrollArea.setWidget(self.detailsPlaceholder)
         self.detailsPlaceholderLayout.addWidget(self.detailsScrollArea)
