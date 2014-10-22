@@ -10,16 +10,28 @@ class Window(QtGui.QWidget):
     def __init__(self):
         super(Window, self).__init__()
 
+        layout = QtGui.QVBoxLayout()
+        self.le = QtGui.QLineEdit(self)
+        self.le.setObjectName('search')
+        layout.addWidget(self.le)
+
+        self.le.textEdited.connect(self.update)
+
         flowLayout = FlowLayout()
-        flowLayout.addWidget(QtGui.QPushButton("A"))
-        flowLayout.addWidget(QtGui.QPushButton("B"))
-        flowLayout.addWidget(QtGui.QPushButton("C"))
-        flowLayout.addWidget(QtGui.QPushButton("D"))
-        flowLayout.addWidget(QtGui.QPushButton("E"))
-        self.setLayout(flowLayout)
+
+        for char in map(chr, range(65, 65+26)):
+            pb = QtGui.QPushButton(char)
+            pb.setObjectName(char)
+            flowLayout.addWidget(pb)
+
+        layout.addLayout(flowLayout)
+
+        self.setLayout(layout)
 
         self.setWindowTitle("Flow Layout")
 
+    def update(self):
+        print "Updated ", self.le.text()
 
 class FlowLayout(QtGui.QLayout):
     def __init__(self, parent=None, margin=0, spacing=-1):
