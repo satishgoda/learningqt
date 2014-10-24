@@ -2,20 +2,15 @@ import pymel.core as pm
 from PySide import QtGui, QtCore
 
 def run():
-    def hello():
-        pm.warning(hello.message)
+    class pbCallback(object):
+        def __init__(self, message, cb=None):
+            self.message = message
+            self.cb = cb
 
-    def hellocallback(message):
-        hello.message = message
-        return hello
-
-    def close():
-        pm.warning("Closing dialog")
-        close.exec_()
-
-    def closecallback(w):
-        close.exec_ = w.close
-        return close
+        def __call__(self, *args, **kwargs):
+            pm.warning(self.message)
+            if self.cb:
+                self.cb()
 
     d = QtGui.QDialog()
 
@@ -27,14 +22,14 @@ def run():
 
     pb = QtGui.QPushButton(d)
     pb.setText("Hello")
-    pb.released.connect(hellocallback("Hello World"))
+    pb.released.connect(pbCallback("Welcome"))
     vbl.addWidget(pb)
 
     vbl.addStretch()
 
     pb = QtGui.QPushButton(d)
     pb.setText("Close")
-    pb.clicked.connect(closecallback(d))
+    pb.clicked.connect(pbCallback("Bye", d.close))
     vbl.addWidget(pb)
 
     d.exec_()
