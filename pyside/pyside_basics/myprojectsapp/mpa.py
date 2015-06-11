@@ -2,6 +2,7 @@ import sys
 from PySide.QtGui import QApplication, QMainWindow
 from PySide.QtGui import QTextEdit
 from PySide.QtGui import QLabel
+from PySide.QtGui import QPushButton
 
 class MyMainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -18,6 +19,12 @@ class MyMainWindow(QMainWindow):
         self.tb1 = self.addToolBar("ToolBar 1")
         self.tb1.addWidget(QLabel("ToolBar 1"))
         self.tb1.orientationChanged.connect(self.mainToolBarOrientationChanged)
+        
+        self.tb1.addSeparator()
+        
+        for index in range(5):
+            pb = QPushButton("B {0}".format(index))
+            self.tb1.addWidget(pb)
 
     def mainToolBarOrientationChanged(self, orientation):
         print "Orientation changed {0}".format(orientation)
