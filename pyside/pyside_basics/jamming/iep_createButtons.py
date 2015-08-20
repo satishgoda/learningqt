@@ -52,7 +52,8 @@ layout.insertLayout(layout.count()-1, createdLayout)
 
 def doneCreating():
     name = nameToCreate.text()
-    created = QPushButton(name)
+    created = QPushButton()
+    created.setText("{0} @ {1}".format(name, hex(id(created))))
     createdLayout.addWidget(created)
     doneButton.hide()
     nameToCreate.hide()
@@ -64,46 +65,85 @@ nameToCreate.setMinimumWidth(150)
 
 widget.adjustSize()
 
-button = createdLayout.takeAt(createdLayout.count()-2).widget()
+#button = createdLayout.takeAt(createdLayout.count()-2).widget()
 
-createdLayout.insertWidget(0, button)
+#createdLayout.insertWidget(0, button)
 
-button = createdLayout.takeAt(0).widget()
+#button = createdLayout.takeAt(0).widget()
 
-button.text()
+#button.text()
 
 widget.adjustSize()
 
-button.deleteLater()
+#button.deleteLater()
 
-createdLayout.count()
+#createdLayout.count()
 
-createdButtons = map(lambda index: createdLayout.itemAt(index).widget(), range(createdLayout.count()))
+#createdButtons = map(lambda index: createdLayout.itemAt(index).widget(), range(createdLayout.count()))
 
-createdButtons
+#createdButtons
 
-createLayout.spacing()
+#createLayout.spacing()
 
-createLayout.setSpacing(0)
+#createLayout.setSpacing(0)
 createLayout.setSpacing(3)
-
 createdLayout.setSpacing(1)
-
 layout.setSpacing(3)
 
-createdLayout.takeAt(createdLayout.count()-1).widget().deleteLater()
+#createdLayout.takeAt(createdLayout.count()-1).widget().deleteLater()
 
-def deleteCreated(index, layout):
+#widget.show()
+
+#toremove = createdLayout.itemAt(createdLayout.count()-1).widget()
+#createdLayout.removeWidget(toremove)
+#toremove.deleteLater()
+#createdLayout.itemAt(0)
+
+def deleteCreated(toremove, tlayout):
     def delete():
-        widget = layout.takeAt(index).widget()
-        widget.deleteLater()
+        parent = toremove.parent()
+        tlayout.removeWidget(toremove)
+        toremove.deleteLater()
+        parent.adjustSize()
     return delete
 
 def postCreate():
     lastCreatedIndex = createdLayout.count()-1
     lastCreated = createdLayout.itemAt(lastCreatedIndex).widget()
-    lastCreated.clicked.connect(deleteCreated(lastCreatedIndex, createdLayout))
+    lastCreated.clicked.connect(deleteCreated(lastCreated, createdLayout))
 
 doneButton.clicked.connect(postCreate)
 
-widget.deleteLater()
+widget.raise_()
+
+children = QPushButton("children")
+layout.addWidget(children)
+
+def printChildren():
+    from pprint import pprint
+    pprint(widget.children())
+    
+children.clicked.connect(printChildren)
+
+#createdLayout.update()
+#createdLayout.invalidate()
+#widget.adjustSize()
+
+#layout.children()
+
+#widget.children()
+
+#widget
+
+#id(widget)
+#hex(id(widget))
+
+#layout.count()
+
+#layout.children()
+
+#widget.children()
+
+#widget.findChild(QPushButton, doneButton)
+
+#widget.deleteLater()
