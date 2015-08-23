@@ -1,5 +1,5 @@
 from PySide.QtGui import QPushButton, QAction, QMenu, QWidget, QLabel, QLineEdit
-from PySide.QtGui import QVBoxLayout, QHBoxLayout, QStackedWidget
+from PySide.QtGui import QVBoxLayout, QHBoxLayout, QStackedWidget, QScrollArea
 
 class Widget(QWidget):
     def __init__(self, parent=None):
@@ -32,6 +32,7 @@ class CreateWidget(Widget):
         self.setLayout(layout)
         self.actionButton = QPushButton("Create")
         layout.addWidget(self.actionButton)
+        layout.addStretch()
         super(CreateWidget, self)._setupUi()
     
     def _setupSignals(self):
@@ -50,6 +51,7 @@ class CreatingWidget(Widget):
         self.setLayout(layout)
         self.actionButton = QPushButton("Done")
         layout.addWidget(self.actionButton)
+        layout.addStretch()
         super(CreatingWidget, self)._setupUi()
 
     def _setupSignals(self):
@@ -78,10 +80,15 @@ class CreationWidget(QStackedWidget):
         self._setupSignals()
     
     def _setupUi(self):
-        pass
+        self.createWidget = CreateWidget()
+        self.creatingWidget = CreatingWidget()
+        self.addWidget(self.createWidget)
+        self.addWidget(self.creatingWidget)
 
     def _setupSignals(self):
-        pass
+        self.createWidget.actionButton.clicked.connect(lambda index=1: self.setCurrentIndex(index))
+        self.creatingWidget.actionButton.clicked.connect(lambda index=0: self.setCurrentIndex(index))
+
 
 class CreatedWidget(Widget):
     def __init__(self, parent=None):
@@ -102,7 +109,14 @@ class RemoveWidgetExampleWidget(QWidget):
         self._setupSignals()
     
     def _setupUi(self):
-        pass
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        
+        self.creationWidget = CreationWidget()
+        
+        layout.addWidget(self.creationWidget)
+        
+        layout.addStretch()
 
     def _setupSignals(self):
         pass    
