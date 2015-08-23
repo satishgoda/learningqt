@@ -1,5 +1,4 @@
 class ContainerWidget(QWidget):
-    """"This widget will contain lots of containees"""
     def __init__(self, parent=None):
         super(ContainerWidget, self).__init__(parent)
         
@@ -28,22 +27,6 @@ class ContainerWidget(QWidget):
         
         layout.insertWidget(layout.count()-1, button)
 
-# scw = QWidget()
-# scw.setMinimumHeight(400)
-# 
-# layout = QVBoxLayout()
-# scw.setLayout(layout)
-# 
-# sa = QScrollArea()
-# sa.setWidgetResizable(True)
-# 
-# ssw = ContainerWidget()
-# sa.setWidget(ssw)
-# 
-# layout.addWidget(sa)
-# 
-# scw.show()
-
 class ScrollableWidget(QScrollArea):
     def __init__(self, widget, parent=None):
         super(ScrollableWidget, self).__init__(parent)
@@ -55,13 +38,14 @@ class DemoWidget(QWidget):
         super(DemoWidget, self).__init__(parent)
         layout = QVBoxLayout()
         self.setLayout(layout)
-        
         layout.addWidget(widget)
         self.setMinimumHeight(400)
 
-
 containerWidget = ContainerWidget()
-scrollableWidget = ScrollableWidget(containerWidget)
-demoWidget = DemoWidget(scrollableWidget)
+containerWidget.show()
 
+scrollableWidget = ScrollableWidget(containerWidget)
+scrollableWidget.show()
+
+demoWidget = DemoWidget(scrollableWidget)
 demoWidget.show()
