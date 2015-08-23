@@ -1,4 +1,5 @@
 class ContainerWidget(QWidget):
+    """Display content"""
     def __init__(self, parent=None):
         super(ContainerWidget, self).__init__(parent)
         
@@ -28,12 +29,14 @@ class ContainerWidget(QWidget):
         layout.insertWidget(layout.count()-1, button)
 
 class ScrollableWidget(QScrollArea):
+    """Constrain content to be displayed in a scrolalble area"""
     def __init__(self, widget, parent=None):
         super(ScrollableWidget, self).__init__(parent)
         self.setWidget(widget)
         self.setWidgetResizable(True)
 
 class DemoWidget(QWidget):
+    """Ïntegrate everything"""
     def __init__(self, widget, parent=None):
         super(DemoWidget, self).__init__(parent)
         layout = QVBoxLayout()
@@ -49,3 +52,25 @@ scrollableWidget.show()
 
 demoWidget = DemoWidget(scrollableWidget)
 demoWidget.show()
+
+"""
+I started with the following snippet that did not yeild expected results.
+
+sa = QScrollArea()
+
+sa.setMaximumHeight(400)
+
+sa.adjustSize()
+
+layout = QVBoxLayout()
+sa.setLayout(layout)
+
+sa.setEnabled(True)
+
+for c in "stringbringfringhringshring":
+    layout.addWidget(QPushButton(c))
+
+sa.setWidgetResizable(True)
+
+sa.show()
+"""
