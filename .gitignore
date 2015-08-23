@@ -36,3 +36,4 @@
 # debug and release
 build/*.o
 release/*.o
+*.py~
