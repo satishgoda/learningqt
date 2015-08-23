@@ -1,5 +1,7 @@
 from PySide.QtGui import QPushButton, QAction, QMenu, QWidget, QLabel, QLineEdit
 from PySide.QtGui import QVBoxLayout, QHBoxLayout, QStackedWidget, QScrollArea
+from PySide.QtGui import QSizePolicy
+
 
 class Widget(QWidget):
     def __init__(self, parent=None):
@@ -18,6 +20,7 @@ class Widget(QWidget):
         placeholderLayout.addWidget(self.placeholder)
         
         layout.insertLayout(0, placeholderLayout)
+
         
 class CreateWidget(Widget):
     description = "Create button will appear here"
@@ -29,14 +32,22 @@ class CreateWidget(Widget):
     
     def _setupUi(self):
         layout = QVBoxLayout()
-        self.setLayout(layout)
+        
+        self.createLayout = QHBoxLayout()
+        
+        self.createLayout.addStretch()
         self.actionButton = QPushButton("Create")
-        layout.addWidget(self.actionButton)
+        self.createLayout.addWidget(self.actionButton)
+        
+        self.setLayout(layout)
+        layout.addLayout(self.createLayout)
         layout.addStretch()
+        
         super(CreateWidget, self)._setupUi()
     
     def _setupSignals(self):
         pass
+
     
 class CreatingWidget(Widget):
     description = "Widget to accept name of object and done/cancel buttons will appear here"
@@ -48,29 +59,23 @@ class CreatingWidget(Widget):
 
     def _setupUi(self):
         layout = QVBoxLayout()
-        self.setLayout(layout)
+        
+        self.creatingLayout = QHBoxLayout()
+        
+        self.userInput = QLineEdit()
+        self.creatingLayout.addWidget(self.userInput)
+        
         self.actionButton = QPushButton("Done")
-        layout.addWidget(self.actionButton)
+        self.creatingLayout.addWidget(self.actionButton)
+        
+        self.setLayout(layout)
+        layout.addLayout(self.creatingLayout)
         layout.addStretch()
+        
         super(CreatingWidget, self)._setupUi()
 
     def _setupSignals(self):
         pass
-    
-createWidget = CreateWidget()
-createWidget.show()
-
-creatingWidget = CreatingWidget()
-creatingWidget.show()
-
-creationWidget = QStackedWidget()
-creationWidget.addWidget(createWidget)
-creationWidget.addWidget(creatingWidget)
-creationWidget.children()
-creationWidget.show()
-
-createWidget.actionButton.clicked.connect(lambda index=1: creationWidget.setCurrentIndex(index))
-creatingWidget.actionButton.clicked.connect(lambda index=0: creationWidget.setCurrentIndex(index))
 
 
 class CreationWidget(QStackedWidget):
@@ -82,12 +87,12 @@ class CreationWidget(QStackedWidget):
     def _setupUi(self):
         self.createWidget = CreateWidget()
         self.creatingWidget = CreatingWidget()
+        
         self.addWidget(self.createWidget)
         self.addWidget(self.creatingWidget)
-
+    
     def _setupSignals(self):
-        self.createWidget.actionButton.clicked.connect(lambda index=1: self.setCurrentIndex(index))
-        self.creatingWidget.actionButton.clicked.connect(lambda index=0: self.setCurrentIndex(index))
+        pass
 
 
 class CreatedWidget(Widget):
@@ -97,14 +102,24 @@ class CreatedWidget(Widget):
         self._setupSignals()
     
     def _setupUi(self):
-        pass
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+        
+        layout.addStretch()
+
+    def add(self, name):
+        created = QPushButton()
+        created.setText("{0} @ {1}".format(name, hex(id(created))))
+        layout = self.layout()
+        
+        layout.insertWidget(layout.count()-1, created)
 
     def _setupSignals(self):
-        pass
+        pass    
 
-class RemoveWidgetExampleWidget(QWidget):
+class CreateRemoveWidget(QWidget):
     def __init__(self, parent=None):
-        super(RemoveWidgetExampleWidget, self).__init__(parent)
+        super(CreateRemoveWidget, self).__init__(parent)
         self._setupUi()
         self._setupSignals()
     
@@ -116,7 +131,52 @@ class RemoveWidgetExampleWidget(QWidget):
         
         layout.addWidget(self.creationWidget)
         
+        self.createdWidget = CreatedWidget()
+        
+        layout.addWidget(self.createdWidget)
+        
         layout.addStretch()
 
     def _setupSignals(self):
-        pass    
+        self.creationWidget.createWidget.actionButton.clicked.connect(self._aboutToCreate)
+        self.creationWidget.creatingWidget.actionButton.clicked.connect(self._letsCreate)
+
+    def _aboutToCreate(self):
+        self.creationWidget.setCurrentIndex(1)
+    
+    def _letsCreate(self):
+        name = self.creationWidget.creatingWidget.userInput.text()
+        self.createdWidget.add(name)
+
+        self.creationWidget.setCurrentIndex(0)
+
+
+widget = CreateRemoveWidget()
+
+widget.show()
+
+#widget.deleteLater()
+
+
+
+
+"""
+createWidget = CreateWidget()
+createWidget.show()
+
+creatingWidget = CreatingWidget()
+creatingWidget.show()
+
+creationWidget = QStackedWidget()
+creationWidget.addWidget(createWidget)
+creationWidget.addWidget(creatingWidget)
+creationWidget.children()
+creationWidget.show()
+creationWidget.deleteLater()
+
+#creationWidget = CreationWidget()
+
+#creationWidget.show()
+
+
+"""
