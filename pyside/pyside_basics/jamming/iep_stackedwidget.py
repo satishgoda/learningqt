@@ -1,5 +1,6 @@
-from PySide.QtGui import QPushButton, QAction, QMenu, QWidget, QLabel, QLineEdit
-from PySide.QtGui import QVBoxLayout, QHBoxLayout, QStackedWidget, QScrollArea
+from PySide.QtGui import QVBoxLayout, QHBoxLayout
+from PySide.QtGui import QWidget, QStackedWidget, QScrollArea
+from PySide.QtGui import QPushButton, QLabel, QLineEdit
 from PySide.QtGui import QSizePolicy
 
 
@@ -41,9 +42,12 @@ class CreateWidget(Widget):
         
         self.setLayout(layout)
         layout.addLayout(self.createLayout)
+        
         layout.addStretch()
         
         super(CreateWidget, self)._setupUi()
+        
+        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
     
     def _setupSignals(self):
         pass
@@ -70,9 +74,12 @@ class CreatingWidget(Widget):
         
         self.setLayout(layout)
         layout.addLayout(self.creatingLayout)
+        
         layout.addStretch()
         
         super(CreatingWidget, self)._setupUi()
+        
+        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
     def _setupSignals(self):
         pass
@@ -90,6 +97,8 @@ class CreationWidget(QStackedWidget):
         
         self.addWidget(self.createWidget)
         self.addWidget(self.creatingWidget)
+        
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
     
     def _setupSignals(self):
         pass
@@ -108,14 +117,28 @@ class CreatedWidget(Widget):
         layout.addStretch()
 
     def add(self, name):
+        layout = self.layout()
+
         created = QPushButton()
         created.setText("{0} @ {1}".format(name, hex(id(created))))
-        layout = self.layout()
+        
+        created.clicked.connect(self.deleteCreated(created))
         
         layout.insertWidget(layout.count()-1, created)
 
+    def deleteCreated(self, toremove):
+        layout = self.layout()
+        
+        def delete():
+            parent = toremove.parent()
+            layout.removeWidget(toremove)
+            toremove.deleteLater()
+            parent.adjustSize()
+        return delete
+
     def _setupSignals(self):
         pass    
+
 
 class CreateRemoveWidget(QWidget):
     def __init__(self, parent=None):
@@ -133,9 +156,11 @@ class CreateRemoveWidget(QWidget):
         
         self.createdWidget = CreatedWidget()
         
-        layout.addWidget(self.createdWidget)
+        sa = QScrollArea()
+        sa.setWidgetResizable(True)
+        sa.setWidget(self.createdWidget)        
         
-        layout.addStretch()
+        layout.addWidget(sa)
 
     def _setupSignals(self):
         self.creationWidget.createWidget.actionButton.clicked.connect(self._aboutToCreate)
@@ -147,7 +172,6 @@ class CreateRemoveWidget(QWidget):
     def _letsCreate(self):
         name = self.creationWidget.creatingWidget.userInput.text()
         self.createdWidget.add(name)
-
         self.creationWidget.setCurrentIndex(0)
 
 
@@ -155,28 +179,3 @@ widget = CreateRemoveWidget()
 
 widget.show()
 
-#widget.deleteLater()
-
-
-
-
-"""
-createWidget = CreateWidget()
-createWidget.show()
-
-creatingWidget = CreatingWidget()
-creatingWidget.show()
-
-creationWidget = QStackedWidget()
-creationWidget.addWidget(createWidget)
-creationWidget.addWidget(creatingWidget)
-creationWidget.children()
-creationWidget.show()
-creationWidget.deleteLater()
-
-#creationWidget = CreationWidget()
-
-#creationWidget.show()
-
-
-"""
