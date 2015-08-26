@@ -55,16 +55,17 @@ class ToolBar(QWidget):
     def addTool(self, name):
         tool = Tool(name)
         self.onSelectionChanged.inform(tool)
+        self.tools.append(tool)
+        
         layout = self.layout()
         layout.insertWidget(layout.count()-1, tool)
+
 
 toolbar = ToolBar()
 toolbar.show()
 
 toolbar.addTool("Tool 1")
-
 toolbar.addTool("Tool 2")
 
 toolbar.onSelectionChanged.updateContext(False)
-
 toolbar.onSelectionChanged.updateContext(True)
