@@ -1,44 +1,70 @@
 
 from PySide.QtGui import QWidget, QPushButton, QAction
-from PySide.QtGui import QVBoxLayout
+from PySide.QtGui import QHBoxLayout
 
 
-widget = QWidget()
+class Context(object):
+    def __init__(self):
+        self.state = False
 
-layout = QVBoxLayout(widget)
 
-pb1 = QPushButton("Tool instance 1")
-pb2 = QPushButton("Tool instance 2")
+class SelectionChanged(QAction):
+    def __init__(self, widget):
+        super(SelectionChanged, self).__init__(widget)
+        self.triggered.connect(self.timeToInform)
+        self.context = Context()
+    
+    @property
+    def informees(self):
+        return self.associatedWidgets()
+    
+    def inform(self, informee):
+        informee.addAction(self)
 
-layout.addWidget(pb1)
-layout.addWidget(pb2)
+    def updateContext(self, value):
+        self.context.state = value
+        self.trigger()
+    
+    def timeToInform(self):
+        for informee in self.informees:
+            informee.refresh(self.context)
 
-widget.show()
 
-selectionChanged = QAction(widget)
+class Tool(QPushButton):
+    def __init__(self, *args):
+        super(Tool, self).__init__(*args)
+    
+    def refresh(self, context):
+        self.setEnabled(context.state)
 
-def updateObservers(selectionChanged):
-    def _doUpdate():
-        for observer in selectionChanged.associatedWidgets():
-            observer.setEnabled(state)
-    return _doUpdate
-            
-selectionChanged.triggered.connect(updateObservers(selectionChanged))
 
-selectionChanged.associatedWidgets()
+class ToolBar(QWidget):
+    def __init__(self, parent=None):
+        super(ToolBar, self).__init__(parent)
+        self.onSelectionChanged = SelectionChanged(self)
+        self.tools = []
+        self._setupUi()
+    
+    def _setupUi(self):
+        layout = QHBoxLayout()
+        layout.addStretch()
+        self.setLayout(layout)
+        self.setMinimumHeight(40)
+        self.setMaximumHeight(40)
+    
+    def addTool(self, name):
+        tool = Tool(name)
+        self.onSelectionChanged.inform(tool)
+        layout = self.layout()
+        layout.insertWidget(layout.count()-1, tool)
 
-pb1.addAction(selectionChanged)
+toolbar = ToolBar()
+toolbar.show()
 
-selectionChanged.associatedWidgets()
+toolbar.addTool("Tool 1")
 
-pb2.addAction(selectionChanged)
+toolbar.addTool("Tool 2")
 
-selectionChanged.associatedWidgets()
+toolbar.onSelectionChanged.updateContext(False)
 
-state = False
-
-selectionChanged.trigger()
-
-state = True
-
-selectionChanged.trigger()
+toolbar.onSelectionChanged.updateContext(True)
