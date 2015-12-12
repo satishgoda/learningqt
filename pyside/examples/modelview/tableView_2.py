@@ -12,7 +12,7 @@ class MyModel(QtCore.QAbstractTableModel):
         super(MyModel, self).__init__(parent)
         self.topLeftCellIndex = self.createIndex(0, 0)
         self.timer = QtCore.QTimer(self)
-        self.timer.setInterval(1000)
+        self.timer.setInterval(5000)
         self.timer.timeout.connect(self.timerHit)
         self.timer.start()
     
@@ -20,7 +20,9 @@ class MyModel(QtCore.QAbstractTableModel):
         # emit a signal to make the view reread identified data
         # When the model is attached to the view, the dataChanged signal
         # is connected to a slot in the view!!
+        print "Timer timed out"
         self.dataChanged.emit(self.topLeftCellIndex, self.topLeftCellIndex)
+        print "Inform the view that it needs to update the specified modelIndex"
     
     def rowCount(self, modelIndex):
         return 2
@@ -33,9 +35,11 @@ class MyModel(QtCore.QAbstractTableModel):
         column = modelIndex.column()
         
         if role == Qt.ItemDataRole.DisplayRole:
+            if modelIndex == self.topLeftCellIndex:
+                print "Time changed"
             return QtCore.QTime.currentTime().toString()
         elif role == Qt.ItemDataRole.FontRole:
-            if modelIndex == self.timerIndex:
+            if modelIndex == self.topLeftCellIndex:
                 boldFont = QtGui.QFont()
                 boldFont.setBold(True)
                 return boldFont
@@ -48,9 +52,25 @@ tableView = QtGui.QTableView()
 
 tableView.show()
 
+
 myModel = MyModel(None)
-
 tableView.setModel(myModel)
-
 # Implicit signal/slot connections
 # The model's dataChanged signal is connected to a slot in the view!
+
+"""
+Time changed
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Time changed
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Time changed
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Time changed
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Time changed
+"""
+
