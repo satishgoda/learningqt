@@ -1,3 +1,5 @@
+# http://doc.qt.io/qt-4.8/modelview.html
+
 from PySide import QtGui
 from PySide import QtCore
 
