@@ -36,7 +36,8 @@ class MyModel(QtCore.QAbstractTableModel):
         
         if role == Qt.ItemDataRole.DisplayRole:
             if modelIndex == self.topLeftCellIndex:
-                print "Time changed"
+                if self.timer.isActive():
+                    print "Updating time"
             return QtCore.QTime.currentTime().toString()
         elif role == Qt.ItemDataRole.FontRole:
             if modelIndex == self.topLeftCellIndex:
@@ -59,18 +60,39 @@ tableView.setModel(myModel)
 # The model's dataChanged signal is connected to a slot in the view!
 
 """
-Time changed
+In [11]: (executing lines 1 to 58 of "modelview.py")
+Updating time
 Timer timed out
 Inform the view that it needs to update the specified modelIndex
-Time changed
+Updating time
 Timer timed out
 Inform the view that it needs to update the specified modelIndex
-Time changed
+Updating time
 Timer timed out
 Inform the view that it needs to update the specified modelIndex
-Time changed
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Time changed
-"""
+Updating time
+Updating time
 
+In [12]: timer = tableView.model().timer
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Updating time
+
+In [13]: timer.isActive()
+Out[13]: True
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Updating time
+
+In [14]: timer.stop()
+
+In [15]: timer.start()
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Updating time
+Timer timed out
+Inform the view that it needs to update the specified modelIndex
+Updating time
+
+In [16]: timer.stop()
+"""
