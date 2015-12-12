@@ -3,7 +3,6 @@
 from PySide import QtGui
 from PySide import QtCore
 
-
 class MyModel(QtCore.QAbstractTableModel):
     def __init__(self, parent):
         super(MyModel, self).__init__(parent)
@@ -15,17 +14,34 @@ class MyModel(QtCore.QAbstractTableModel):
         return 3
     
     def data(self, modelIndex, role=QtCore.Qt.DisplayRole):
+        row = modelIndex.row()
+        column = modelIndex.column()
         print role,' ',
 
         if role == 8:
             print '\n', '-'*35
-
-        row = modelIndex.row() + 1
-        column = modelIndex.column() + 1
         
         if role == QtCore.Qt.DisplayRole:
-            return "Row{0}, Column{1}".format(row, column)
-        return ""
+            if row == 0 and column == 1: return "<--left"
+            if row == 1 and column == 1: return "right-->"
+            return "R{}, C{}".format(row+1, column+1)
+        elif role == QtCore.Qt.FontRole:
+            if row == 0 and column == 0:
+                boldFont = QtGui.QFont()
+                boldFont.setBold(True)
+                return boldFont        
+        elif role == QtCore.Qt.BackgroundRole:
+            if row == 1 and column == 2:
+                redBackground = QtGui.QBrush(QtCore.Qt.red)
+                return redBackground
+        elif role == QtCore.Qt.TextAlignmentRole:
+            if row == 0 and column == 2:
+                return QtCore.Qt.AlignRight
+        elif role == QtCore.Qt.CheckStateRole:
+            if row == 1 and column == 0:
+                return QtCore.Qt.Checked
+        else:
+            return ""
 
 tableView = QtGui.QTableView()
 myModel = MyModel(None)
