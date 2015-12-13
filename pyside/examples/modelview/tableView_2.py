@@ -1,5 +1,6 @@
 # http://doc.qt.io/qt-4.8/modelview.html
 # http://doc.qt.io/qt-4.8/modelview.html#2-3-a-clock-inside-a-table-cell
+# http://doc.qt.io/qt-4.8/modelview.html#2-4-setting-up-headers-for-columns-and-rows
 
 from PySide import QtGui
 from PySide import QtCore
@@ -30,6 +31,14 @@ class MyModel(QtCore.QAbstractTableModel):
     def columnCount(self, modelIndex):
         return 3
     
+    def headerData(self, section, orientation, role):
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
+                headers = ("first", "second", "third")
+            else:
+                headers = ("Bugs Bunny", "Daffy Duck")
+            return dict(enumerate(headers))[section]
+    
     def data(self, modelIndex, role=Qt.ItemDataRole.DisplayRole):
         row = modelIndex.row()
         column = modelIndex.column()
@@ -59,40 +68,9 @@ tableView.setModel(myModel)
 # Implicit signal/slot connections
 # The model's dataChanged signal is connected to a slot in the view!
 
-"""
-In [11]: (executing lines 1 to 58 of "modelview.py")
-Updating time
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-Updating time
 
-In [12]: timer = tableView.model().timer
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
+tableView.verticalHeader().hide()
+tableView.verticalHeader().show()
 
-In [13]: timer.isActive()
-Out[13]: True
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-
-In [14]: timer.stop()
-
-In [15]: timer.start()
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-Timer timed out
-Inform the view that it needs to update the specified modelIndex
-Updating time
-
-In [16]: timer.stop()
-"""
+tableView.horizontalHeader().hide()
+tableView.horizontalHeader().show()
