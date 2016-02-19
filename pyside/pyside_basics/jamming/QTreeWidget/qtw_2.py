@@ -40,3 +40,17 @@ qtw.topLevelItemCount()
 qtw.topLevelItem(0).text(0)
 qtw.topLevelItem(1).text(0)
 qtw.topLevelItem(2).text(0)
+
+si = qtw.selectedItems()[0]
+
+si.setHidden(False)
+
+itemsToHide = qtw.selectedItems()
+
+for si in itemsToHide:
+    si.setHidden(True)
+    
+for i in itemsToHide:
+    i.setHidden(False)
+    
+qtw.findItems('slave3', QtCore.Qt.MatchContains)[0].isHidden()
