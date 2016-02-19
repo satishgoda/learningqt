@@ -54,3 +54,9 @@ for i in itemsToHide:
     i.setHidden(False)
     
 qtw.findItems('slave3', QtCore.Qt.MatchContains)[0].isHidden()
+
+i.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
+
+for index in range(qtw.topLevelItemCount()):
+    tli = qtw.topLevelItem(index)
+    tli.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
