@@ -60,8 +60,42 @@ for rig in pm.ls(regex="*:*_rig"):
 
 ################
 
+qte = QtGui.QTextEdit()
 
 ################
 
+mainLayout.addWidget(qte)
+
+################
+
+qte.setMaximumHeight(70)
+
+################
+
+qte.setMaximumHeight(100)
+
+################
+
+qte.setMaximumHeight(30)
+
+################
+
+def updateStatus():
+    selItem = qtw.selectedItems()[0]
+    namespace = selItem.text(0)
+    qte.append(namespace)
+
+qtw.itemClicked.connect(updateStatus)
+
+################
+
+qte.setReadOnly(True)
+
+################
+
+qte.setHtml("<b>Nice</b>")
+qte.append("<b>Better</b>")
+qte.append("<i style='color:red'>Better</i>")
+qte.append("<pre style='çolor:black'>Why the style changed?</pre>")
 
 ################
