@@ -99,3 +99,15 @@ qte.append("<i style='color:red'>Better</i>")
 qte.append("<pre style='çolor:black'>Why the style changed?</pre>")
 
 ################
+
+qte.setTextColor(QtCore.Qt.red)
+
+################
+
+qte.setTextColor(QtCore.Qt.black)
+
+################
+
+qte.setTextColor(QtCore.Qt.green)
+
+################
