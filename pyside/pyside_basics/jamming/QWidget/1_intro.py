@@ -111,3 +111,53 @@ qte.setTextColor(QtCore.Qt.black)
 qte.setTextColor(QtCore.Qt.green)
 
 ################
+
+qte.clear()
+
+################
+
+qgb = QtGui.QGroupBox("Modes")
+mainLayout.addWidget(qgb)
+
+################
+
+qgbHlayout = QtGui.QHBoxLayout()
+qgb.setLayout(qgbHlayout)
+
+redMode = QtGui.QRadioButton("Red")
+greenMode = QtGui.QRadioButton("Green")
+
+qgbHlayout.addWidget(redMode)
+
+################
+
+qgbHlayout.addWidget(greenMode)
+
+################
+
+redMode.setChecked(True)
+
+################
+
+print qgb.children()
+
+################
+
+
+qgb.setCheckable(True)
+
+################
+
+
+def setCurrentMode():
+    print ("Red" if redMode.isChecked() else "Green")
+
+qgb.toggled.connect(setCurrentMode)
+
+################
+
+def updateMode():
+    color = QtCore.Qt.red if redMode.isChecked() else QtCore.Qt.green
+    qte.setTextColor(color)
+    
+redMode.toggled.connect(updateMode)
