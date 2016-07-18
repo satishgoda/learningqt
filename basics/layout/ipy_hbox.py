@@ -17,6 +17,12 @@ self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 self.show()
 
+self.lay.count() == 0
+
+self.lay.spacing() == 6
+
+self.lay.contentsMargins() == QtCore.QMargins(11, 11, 11, 11)
+
 self.setLayout(QtGui.QHBoxLayout())
 
 self.lay.addWidget(QtGui.QPushButton('1'))
