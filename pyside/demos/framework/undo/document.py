@@ -116,8 +116,12 @@ class Document(QWidget):
 s1 = Shape(ShapeType.Rectangle, color=Qt.green, rect=QRect(0, 0, 100, 100))
 s2 = Shape(ShapeType.Circle, rect=QRect(200, 200, 100, 100))
 
+s3 = Shape(ShapeType.Circle, color=Qt.blue, rect=QRect(200, 200, 50, 50))
+s4 = Shape(ShapeType.Rectangle, color=Qt.yellow, rect=QRect(0, 0, 25, 25))
+
+
 d = Document()
 
-d._shapeList = [s1, s2]
+d._shapeList = [s1, s2, s3, s4]
 
 d.show()
