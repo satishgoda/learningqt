@@ -54,12 +54,15 @@ class ToolsListWidget(QtGui.QWidget):
 class PropertiesWidget(QtGui.QTabWidget):
     def __init__(self, *args, **kwargs):
         super(PropertiesWidget, self).__init__(*args, **kwargs)
-        
+        self.setTabsClosable(True)
+        self.setTabShape(QtGui.QTabWidget.Triangular)
+
 
 class ToolBoxWidget(QtGui.QWidget):
     def __init__(self, *args, **kwargs):
         super(ToolBoxWidget, self).__init__(*args, **kwargs)
         self._setupUi()
+        self._setupSignals()
         
         self.tools = {}
 
@@ -67,14 +70,19 @@ class ToolBoxWidget(QtGui.QWidget):
         self._layoutMain = QtGui.QHBoxLayout()
         self.setLayout(self._layoutMain)
         
+        self.layout().setSpacing(0)
+        
         self._widgetToolsList = ToolsListWidget()
         self._layoutMain.addWidget(self._widgetToolsList)    
 
         self._widgetProperties = PropertiesWidget()
         self._layoutMain.addWidget(self._widgetProperties)
 
+    def _setupSignals(self):
+        self.properties.tabCloseRequested.connect(self.closeToolProperties)
+
     def addTool(self, tool):
-        callback = partial(self.toolClicked, tool)
+        callback = partial(self.displayToolProperties, tool)
         
         self.toolsList.addTool(tool, callback)
         
@@ -83,10 +91,15 @@ class ToolBoxWidget(QtGui.QWidget):
         
         self.tools[tool] = props
     
-    def toolClicked(self, tool):
+    @QtCore.Slot(Tool, result=None)
+    def displayToolProperties(self, tool):
         props = self.tools[tool]
         self.properties.insertTab(0, props, tool.name)
         self.properties.setCurrentWidget(props)
+
+    @QtCore.Slot(int, result=None)
+    def closeToolProperties(self, index):
+        self.properties.removeTab(index)
 
     @property
     def toolsList(self):
@@ -109,3 +122,12 @@ tool3 = Tool('tool3', 'm n o p')
 tbw.addTool(tool1)
 tbw.addTool(tool2)
 tbw.addTool(tool3)
+
+
+##
+
+tabBar = tbw.properties.tabBar()
+
+tabBar.hide()
+
+tabBar.show()
