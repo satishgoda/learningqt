@@ -79,7 +79,6 @@ tbw = ToolBoxWidget()
 tbw.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 tbw.show()
 
-
 tool1 = Tool('tool1', 'a b c')
 tool2 = Tool('tool2', 'x y')
 tool3 = Tool('tool3', 'm n o p')
@@ -88,17 +87,35 @@ tbw.toolsList.addTool(tool1)
 tbw.toolsList.addTool(tool2)
 tbw.toolsList.addTool(tool3)
 
+##
+
 props1 = ToolPropertiesWidget()
 props1.setHeading(tool1.properties)
-tbw.properties.addTab(props1, tool1.name)
+
+##
 
 props2 = ToolPropertiesWidget()
 props2.setHeading(tool2.properties)
-tbw.properties.addTab(props2, tool2.name)
+
+##
 
 props3 = ToolPropertiesWidget()
 props3.setHeading(tool3.properties)
-tbw.properties.addTab(props3, tool3.name)
+
+##
+
+tbw.properties.insertTab(0, props3, tool3.name)
+tbw.properties.setCurrentWidget(props3)
+
+##
+
+tbw.properties.insertTab(0, props2, tool2.name)
+tbw.properties.setCurrentWidget(props2)
+
+##
+
+tbw.properties.insertTab(0, props1, tool1.name)
+tbw.properties.setCurrentWidget(props1)
 
 ##
 
@@ -110,23 +127,6 @@ tbw.properties.hide()
 tbw.adjustSize()
 
 tbw.properties.show()
-
 tbw.adjustSize()
 
 ##
-
-tbw.properties.removeTab(1)
-tbw.properties.insertTab(0, props2, tool2.name)
-tbw.properties.setCurrentWidget(props2)
-
-##
-
-tbw.properties.removeTab(2)
-tbw.properties.insertTab(0, props3, tool3.name)
-tbw.properties.setCurrentWidget(props3)
-
-##
-
-tbw.properties.removeTab(2)
-tbw.properties.insertTab(0, props1, tool1.name)
-tbw.properties.setCurrentWidget(props1)
