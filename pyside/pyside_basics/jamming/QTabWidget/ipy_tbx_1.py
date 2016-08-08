@@ -1,5 +1,9 @@
+from collections import OrderedDict
+from functools import partial
+
 from PySide import QtCore
 from PySide import QtGui
+
 
 
 class Tool(object):
@@ -37,10 +41,12 @@ class ToolsListWidget(QtGui.QWidget):
         
         self._layoutMain.addStretch()
     
-    def addTool(self, tool):
+    def addTool(self, tool, callback):
         layout = self.layout()
         
         button = QtGui.QPushButton(tool.name)
+        
+        button.clicked.connect(callback)
         
         layout.insertWidget(layout.count()-1, button)
 
@@ -54,6 +60,8 @@ class ToolBoxWidget(QtGui.QWidget):
     def __init__(self, *args, **kwargs):
         super(ToolBoxWidget, self).__init__(*args, **kwargs)
         self._setupUi()
+        
+        self.tools = {}
 
     def _setupUi(self):
         self._layoutMain = QtGui.QHBoxLayout()
@@ -64,6 +72,21 @@ class ToolBoxWidget(QtGui.QWidget):
 
         self._widgetProperties = PropertiesWidget()
         self._layoutMain.addWidget(self._widgetProperties)
+
+    def addTool(self, tool):
+        callback = partial(self.toolClicked, tool)
+        
+        self.toolsList.addTool(tool, callback)
+        
+        props = ToolPropertiesWidget()
+        props.setHeading(tool.properties)
+        
+        self.tools[tool] = props
+    
+    def toolClicked(self, tool):
+        props = self.tools[tool]
+        self.properties.insertTab(0, props, tool.name)
+        self.properties.setCurrentWidget(props)
 
     @property
     def toolsList(self):
@@ -83,50 +106,6 @@ tool1 = Tool('tool1', 'a b c')
 tool2 = Tool('tool2', 'x y')
 tool3 = Tool('tool3', 'm n o p')
 
-tbw.toolsList.addTool(tool1)
-tbw.toolsList.addTool(tool2)
-tbw.toolsList.addTool(tool3)
-
-##
-
-props1 = ToolPropertiesWidget()
-props1.setHeading(tool1.properties)
-
-##
-
-props2 = ToolPropertiesWidget()
-props2.setHeading(tool2.properties)
-
-##
-
-props3 = ToolPropertiesWidget()
-props3.setHeading(tool3.properties)
-
-##
-
-tbw.properties.insertTab(0, props3, tool3.name)
-tbw.properties.setCurrentWidget(props3)
-
-##
-
-tbw.properties.insertTab(0, props2, tool2.name)
-tbw.properties.setCurrentWidget(props2)
-
-##
-
-tbw.properties.insertTab(0, props1, tool1.name)
-tbw.properties.setCurrentWidget(props1)
-
-##
-
-tbw.adjustSize()
-
-##
-
-tbw.properties.hide()
-tbw.adjustSize()
-
-tbw.properties.show()
-tbw.adjustSize()
-
-##
+tbw.addTool(tool1)
+tbw.addTool(tool2)
+tbw.addTool(tool3)
