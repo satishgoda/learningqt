@@ -1,0 +1,6 @@
+{
+  "name": "Learning Qt",
+  "tagline": "Qt/PyQt/PySide",
+  "body": "# About\r\n\r\nDocumenting Qt from my point of view\r\n\r\n# Architecture\r\n## Events\r\n* http://doc.qt.io/qt-4.8/qwidget.html#closeEvent",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
