@@ -1,13 +1,25 @@
+##
+
 palette = self.palette()
 
-textBrush = palette.buttonText()
+brush = palette.buttonText()
 
-textBrush.setColor(QColor(255, 0, 0))
+brush.setColor(QtGui.QColor(255, 0, 0))
+palette.setBrush(QtGui.QPalette.ColorGroup.Normal, QtGui.QPalette.ColorRole.ButtonText, brush)
 
-palette.setBrush(QPalette.ColorGroup.Normal, QPalette.ColorRole.ButtonText, textBrush)
+brush.setColor(QtGui.QColor(175, 0, 0))
+palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.ButtonText, brush)
 
-textBrush.setColor(QtGui.QColor(175, 0, 0))
+self.setPalette(palette)
 
-palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.ButtonText, textBrush)
+##
+
+brush = palette.window()
+
+brush.setColor(QtGui.QColor(0, 255, 0))
+palette.setBrush(QtGui.QPalette.ColorGroup.Normal, QtGui.QPalette.ColorRole.Window, brush)
+
+brush.setColor(QtGui.QColor(0, 175, 0))
+palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window, brush)
 
 self.setPalette(palette)
