@@ -1,4 +1,4 @@
-class CustomColumnView(QtGui.QColumnView):
+class CustomColumnView(ColumnView):
     def __init__(self, *args, **kwargs):
         super(CustomColumnView, self).__init__(*args, **kwargs)
         self.activated.connect(self.onActivated)
