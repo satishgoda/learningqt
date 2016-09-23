@@ -25,3 +25,21 @@ class ColoredButtonGroup(QtGui.QGroupBox):
     
     def _OnCurrentColorChosen(self, button):
         print button
+
+
+class ColoredButtonDialog(QtGui.QDialog):
+    def __init__(self, callback, *args, **kwargs):
+        super(ColoredButtonDialog, self).__init__(*args, **kwargs)
+        layout = QtGui.QHBoxLayout()
+        self.setLayout(layout)
+        self.chooser = ColoredButtonGroup(8)
+        self.chooser.currentColorChosen.connect(callback)
+        layout.addWidget(self.chooser)
+
+class Target(object):
+    def colorize(self, color):
+        print color
+
+target = Target()
+chooserdialog = ColoredButtonDialog(target.colorize)
+chooserdialog.exec_()
